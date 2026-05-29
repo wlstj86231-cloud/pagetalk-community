@@ -63,9 +63,18 @@
                 <select id="postBoard"></select>
               </label>
               <label>
-                <span>작품명</span>
-                <input id="postWork" type="text" placeholder="예: 이번 주 연재작" maxlength="40" />
+                <span>연재처</span>
+                <select id="postPlatform"></select>
               </label>
+              <div class="schedule-panel wide">
+                <div class="field-label">연재 요일/상태</div>
+                <div class="schedule-picker" id="schedulePicker"></div>
+              </div>
+              <label class="wide">
+                <span>작품 선택</span>
+                <select id="postWorkSelect"></select>
+              </label>
+              <article class="work-preview wide" id="workPreview"></article>
               <label class="wide">
                 <span>제목</span>
                 <input id="postTitle" type="text" placeholder="이야기하고 싶은 포인트를 한 줄로" maxlength="80" />

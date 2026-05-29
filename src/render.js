@@ -15,7 +15,7 @@
 
     if (query) {
       list = list.filter((post) =>
-        [post.work, post.title, post.body, post.author, post.tag, boardLabel(boards, post.board)]
+        [post.work, post.platform, post.schedule, post.genre, post.title, post.body, post.author, post.tag, boardLabel(boards, post.board)]
           .join(" ")
           .toLowerCase()
           .includes(query)
@@ -94,6 +94,7 @@
         <span class="meta-line">
           <span class="tag ${isSpoiler ? "spoiler" : ""}">${escapeHtml(post.tag)}</span>
           <small>${boardLabel(boards, post.board)}</small>
+          ${post.platform ? `<small>${escapeHtml(post.platform)} · ${escapeHtml(post.schedule || "")}</small>` : ""}
           <small>${timeAgo(post.createdAt)}</small>
         </span>
         <h2>${escapeHtml(post.title)}</h2>
@@ -127,8 +128,17 @@
         <div class="meta-line">
           <span class="tag ${post.tag === "스포" ? "spoiler" : ""}">${escapeHtml(post.tag)}</span>
           <small>${escapeHtml(post.author)}</small>
+          ${post.platform ? `<small>${escapeHtml(post.platform)} · ${escapeHtml(post.schedule || "")} · ${escapeHtml(post.genre || "")}</small>` : ""}
           <small>${timeAgo(post.createdAt)}</small>
         </div>
+        ${
+          post.platform
+            ? `<div class="work-context">
+                <strong>${escapeHtml(post.work)}</strong>
+                <span>${escapeHtml(post.workSummary || "선택한 작품에 대한 이야기입니다.")}</span>
+              </div>`
+            : ""
+        }
         <h2>${escapeHtml(post.title)}</h2>
         <p class="discussion-text">${escapeHtml(post.body)}</p>
         <div class="action-row">

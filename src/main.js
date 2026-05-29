@@ -1,5 +1,5 @@
 (() => {
-  const { boards, seedPosts, palette } = window.PageTalkData;
+  const { boards, platformCatalog, seedPosts, palette } = window.PageTalkData;
   const { keys, loadPosts, savePosts, loadSet, saveSet } = window.PageTalkStorage;
   const { renderApp, visiblePosts } = window.PageTalkRender;
 
@@ -8,6 +8,9 @@
     activeBoard: "all",
     activeSort: "hot",
     activePostId: null,
+    composerPlatformId: platformCatalog[0]?.id || "",
+    composerScheduleId: platformCatalog[0]?.schedules[0]?.id || "",
+    composerWorkId: platformCatalog[0]?.schedules[0]?.works[0]?.id || "",
     likedPosts: loadSet(keys.likedPosts),
     likedComments: loadSet(keys.likedComments)
   };
@@ -25,7 +28,10 @@
     closeComposer: document.querySelector("#closeComposer"),
     publishPost: document.querySelector("#publishPost"),
     postBoard: document.querySelector("#postBoard"),
-    postWork: document.querySelector("#postWork"),
+    postPlatform: document.querySelector("#postPlatform"),
+    schedulePicker: document.querySelector("#schedulePicker"),
+    postWorkSelect: document.querySelector("#postWorkSelect"),
+    workPreview: document.querySelector("#workPreview"),
     postTitle: document.querySelector("#postTitle"),
     postBody: document.querySelector("#postBody"),
     postTag: document.querySelector("#postTag"),
@@ -53,11 +59,24 @@
       .filter((board) => board.id !== "all")
       .map((board) => `<option value="${board.id}">${board.label}</option>`)
       .join("");
+    els.postPlatform.innerHTML = platformCatalog.map((platform) => `<option value="${platform.id}">${platform.label}</option>`).join("");
 
     els.searchInput.addEventListener("input", render);
     els.openComposer.addEventListener("click", openComposer);
     els.closeComposer.addEventListener("click", () => els.composer.classList.remove("is-open"));
     els.publishPost.addEventListener("click", publishPost);
+    els.postPlatform.addEventListener("change", () => {
+      state.composerPlatformId = els.postPlatform.value;
+      state.composerScheduleId = selectedPlatform()?.schedules[0]?.id || "";
+      state.composerWorkId = selectedSchedule()?.works[0]?.id || "";
+      syncBoardWithSelectedWork();
+      renderComposerWorkPicker();
+    });
+    els.postWorkSelect.addEventListener("change", () => {
+      state.composerWorkId = els.postWorkSelect.value;
+      syncBoardWithSelectedWork();
+      renderComposerWorkPreview();
+    });
 
     document.querySelectorAll("[data-sort]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -67,6 +86,7 @@
       });
     });
 
+    renderComposerWorkPicker();
     render();
   }
 
@@ -77,6 +97,7 @@
   function openComposer() {
     els.composer.classList.add("is-open");
     els.composerHint.textContent = "작품 원문·유료 회차 캡처 업로드 없이 감상과 토론만 다룹니다.";
+    renderComposerWorkPicker();
     els.postTitle.focus();
   }
 
@@ -103,14 +124,17 @@
 
   function publishPost() {
     const board = els.postBoard.value;
-    const work = els.postWork.value.trim();
+    const platform = selectedPlatform();
+    const schedule = selectedSchedule();
+    const selectedWork = selectedWorkItem();
+    const work = selectedWork?.title || "";
     const title = els.postTitle.value.trim();
     const body = els.postBody.value.trim();
     const author = els.postAuthor.value.trim() || "익명독자";
     const tag = els.postTag.value;
 
     if (!work || !title || !body) {
-      els.composerHint.textContent = "작품명, 제목, 본문은 꼭 채워야 합니다.";
+      els.composerHint.textContent = "연재처, 작품, 제목, 본문은 꼭 채워야 합니다.";
       return;
     }
 
@@ -119,6 +143,12 @@
       board,
       tag,
       work,
+      platform: platform?.label || "",
+      platformId: platform?.id || "",
+      schedule: schedule?.label || "",
+      scheduleId: schedule?.id || "",
+      genre: selectedWork?.genre || "",
+      workSummary: selectedWork?.summary || "",
       title,
       body,
       author,
@@ -131,8 +161,9 @@
 
     state.posts.unshift(post);
     state.activeBoard = "all";
+    state.activeSort = "new";
     state.activePostId = post.id;
-    els.postWork.value = "";
+    syncSortTabs();
     els.postTitle.value = "";
     els.postBody.value = "";
     els.composer.classList.remove("is-open");
@@ -207,5 +238,82 @@
 
   function persistPosts() {
     savePosts(state.posts);
+  }
+
+  function selectedPlatform() {
+    return platformCatalog.find((platform) => platform.id === state.composerPlatformId) || platformCatalog[0];
+  }
+
+  function selectedSchedule() {
+    const platform = selectedPlatform();
+    return platform?.schedules.find((schedule) => schedule.id === state.composerScheduleId) || platform?.schedules[0];
+  }
+
+  function selectedWorkItem() {
+    const schedule = selectedSchedule();
+    return schedule?.works.find((work) => work.id === state.composerWorkId) || schedule?.works[0];
+  }
+
+  function renderComposerWorkPicker() {
+    const platform = selectedPlatform();
+    if (!platform) return;
+
+    els.postPlatform.value = platform.id;
+    els.schedulePicker.innerHTML = platform.schedules
+      .map(
+        (schedule) => `<button type="button" class="${schedule.id === state.composerScheduleId ? "is-active" : ""}" data-schedule="${schedule.id}">
+          <strong>${schedule.label}</strong>
+          <span>${schedule.works.length}작품</span>
+        </button>`
+      )
+      .join("");
+
+    els.schedulePicker.querySelectorAll("[data-schedule]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.composerScheduleId = button.dataset.schedule;
+        state.composerWorkId = selectedSchedule()?.works[0]?.id || "";
+        syncBoardWithSelectedWork();
+        renderComposerWorkPicker();
+      });
+    });
+
+    const schedule = selectedSchedule();
+    els.postWorkSelect.innerHTML = (schedule?.works || [])
+      .map((work) => `<option value="${work.id}">${work.title} · ${work.genre}</option>`)
+      .join("");
+    state.composerWorkId = selectedWorkItem()?.id || "";
+    els.postWorkSelect.value = state.composerWorkId;
+    renderComposerWorkPreview();
+  }
+
+  function renderComposerWorkPreview() {
+    const platform = selectedPlatform();
+    const schedule = selectedSchedule();
+    const work = selectedWorkItem();
+    if (!platform || !schedule || !work) {
+      els.workPreview.innerHTML = `<p>연재처와 작품을 선택하세요.</p>`;
+      return;
+    }
+
+    els.workPreview.innerHTML = `
+      <div>
+        <strong>${work.title}</strong>
+        <span>${platform.label} · ${schedule.label} · ${work.genre}</span>
+      </div>
+      <p>${work.summary}</p>
+      <small>${platform.note} / ${schedule.note}</small>
+    `;
+  }
+
+  function syncBoardWithSelectedWork() {
+    const platform = selectedPlatform();
+    if (!platform) return;
+    if (platform.contentType === "webtoon" || platform.contentType === "novel") {
+      els.postBoard.value = platform.contentType;
+    }
+  }
+
+  function syncSortTabs() {
+    document.querySelectorAll("[data-sort]").forEach((item) => item.classList.toggle("is-active", item.dataset.sort === state.activeSort));
   }
 })();

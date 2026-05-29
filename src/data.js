@@ -8,6 +8,166 @@
     { id: "creator", label: "창작방", accent: "#334155" }
   ];
 
+  const platformCatalog = [
+    {
+      id: "naver-webtoon",
+      label: "네이버웹툰",
+      contentType: "webtoon",
+      note: "요일별 신작과 인기작 흐름을 빠르게 훑기 좋은 연재처",
+      schedules: [
+        {
+          id: "mon",
+          label: "월",
+          note: "월요일 공개작",
+          works: [
+            { id: "nw-mon-1", title: "퀘스트형 성장물", genre: "학원 액션", summary: "게임식 미션과 성장 흐름을 이야기하기 좋은 작품군" },
+            { id: "nw-mon-2", title: "직장 생존 코미디", genre: "일상 코미디", summary: "회사 생활 공감과 캐릭터 케미가 중심인 작품군" }
+          ]
+        },
+        {
+          id: "wed",
+          label: "수",
+          note: "수요일 공개작",
+          works: [
+            { id: "nw-wed-1", title: "독자 시점 판타지", genre: "현대 판타지", summary: "원작 지식, 생존, 떡밥 토론에 어울리는 작품군" },
+            { id: "nw-wed-2", title: "무협 회귀 서사", genre: "무협", summary: "문파 성장과 장기 복선 이야기가 잘 붙는 작품군" }
+          ]
+        },
+        {
+          id: "fri",
+          label: "금",
+          note: "금요일 공개작",
+          works: [
+            { id: "nw-fri-1", title: "로맨스 판타지 궁정극", genre: "로맨스 판타지", summary: "관계 변화와 의상, 정치 구도 감상이 잘 맞는 작품군" },
+            { id: "nw-fri-2", title: "괴담 수사 파일", genre: "미스터리", summary: "에피소드별 단서와 결말 추측을 나누기 좋은 작품군" }
+          ]
+        },
+        {
+          id: "sun",
+          label: "일",
+          note: "일요일 공개작",
+          works: [
+            { id: "nw-sun-1", title: "휴일 정주행 개그툰", genre: "개그", summary: "짧게 읽고 댓글로 반응을 나누기 좋은 작품군" },
+            { id: "nw-sun-2", title: "가족 드라마 성장툰", genre: "드라마", summary: "인물 감정선과 회차별 여운을 말하기 좋은 작품군" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "kakao-webtoon",
+      label: "카카오웹툰",
+      contentType: "webtoon",
+      note: "장르성이 강한 웹툰과 몰입형 연출을 고르기 좋은 연재처",
+      schedules: [
+        {
+          id: "tue",
+          label: "화",
+          note: "화요일 공개작",
+          works: [
+            { id: "kw-tue-1", title: "빙의 악역 생존기", genre: "로맨스 판타지", summary: "악역 빙의와 선택지 토론에 맞는 작품군" },
+            { id: "kw-tue-2", title: "도시 퇴마 액션", genre: "오컬트 액션", summary: "괴이 설정과 전투 연출 이야기가 잘 붙는 작품군" }
+          ]
+        },
+        {
+          id: "thu",
+          label: "목",
+          note: "목요일 공개작",
+          works: [
+            { id: "kw-thu-1", title: "탑 등반 생존물", genre: "판타지 액션", summary: "층별 규칙과 파티 조합을 토론하기 좋은 작품군" },
+            { id: "kw-thu-2", title: "계약 결혼 로맨스", genre: "로맨스", summary: "관계 진전과 감정선 분석에 어울리는 작품군" }
+          ]
+        },
+        {
+          id: "sat",
+          label: "토",
+          note: "토요일 공개작",
+          works: [
+            { id: "kw-sat-1", title: "주말 액션 블록버스터", genre: "액션", summary: "전투 컷과 빌런 구도를 말하기 좋은 작품군" },
+            { id: "kw-sat-2", title: "힐링 식당 판타지", genre: "힐링", summary: "음식, 손님 사연, 에피소드 감상에 맞는 작품군" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "kakao-page",
+      label: "카카오페이지",
+      contentType: "novel",
+      note: "웹소설 원작과 기다리면 무료 흐름을 함께 보기 좋은 연재처",
+      schedules: [
+        {
+          id: "daily",
+          label: "매일",
+          note: "매일 또는 주 5회 이상 공개작",
+          works: [
+            { id: "kp-daily-1", title: "회귀 재벌 전략물", genre: "현대 판타지", summary: "사업 선택과 투자 판단을 이야기하기 좋은 작품군" },
+            { id: "kp-daily-2", title: "헌터 아카데미물", genre: "헌터물", summary: "능력 성장과 파티 구성을 토론하기 좋은 작품군" }
+          ]
+        },
+        {
+          id: "weekend",
+          label: "주말",
+          note: "주말 몰아보기 좋은 공개작",
+          works: [
+            { id: "kp-weekend-1", title: "빙의 로판 장편", genre: "로맨스 판타지", summary: "원작 전개 변화와 남주 후보 토론에 맞는 작품군" },
+            { id: "kp-weekend-2", title: "정통 무협 장편", genre: "무협", summary: "문파 정치와 사부-제자 관계를 말하기 좋은 작품군" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "ridi",
+      label: "리디",
+      contentType: "novel",
+      note: "장르 소설, 단행본, 연재작을 함께 고르기 좋은 연재처",
+      schedules: [
+        {
+          id: "serial",
+          label: "연재",
+          note: "연재 중인 작품",
+          works: [
+            { id: "rd-serial-1", title: "서바이벌 미스터리", genre: "스릴러", summary: "단서와 반전 예측을 나누기 좋은 작품군" },
+            { id: "rd-serial-2", title: "계약 관계 로맨스", genre: "로맨스", summary: "대사와 감정선 감상에 맞는 작품군" }
+          ]
+        },
+        {
+          id: "completed",
+          label: "완결",
+          note: "완결 후 정주행하기 좋은 작품",
+          works: [
+            { id: "rd-completed-1", title: "완결 판타지 대서사", genre: "판타지", summary: "결말과 복선 회수를 이야기하기 좋은 작품군" },
+            { id: "rd-completed-2", title: "완결 로맨스 단편선", genre: "로맨스", summary: "짧은 호흡으로 추천글 쓰기 좋은 작품군" }
+          ]
+        }
+      ]
+    },
+    {
+      id: "munpia",
+      label: "문피아",
+      contentType: "novel",
+      note: "남성향 판타지, 무협, 현대물이 강한 웹소설 연재처",
+      schedules: [
+        {
+          id: "daily",
+          label: "매일",
+          note: "매일 연재 중심 작품",
+          works: [
+            { id: "mp-daily-1", title: "천재 작가 회귀물", genre: "현대 판타지", summary: "창작 성공과 업계물 감상을 나누기 좋은 작품군" },
+            { id: "mp-daily-2", title: "무림 귀환 생존기", genre: "무협", summary: "무공 체계와 세력전을 토론하기 좋은 작품군" }
+          ]
+        },
+        {
+          id: "weekday",
+          label: "평일",
+          note: "평일 연재 중심 작품",
+          works: [
+            { id: "mp-weekday-1", title: "던전 운영 시뮬레이션", genre: "경영 판타지", summary: "시스템 운영과 성장 루트를 이야기하기 좋은 작품군" },
+            { id: "mp-weekday-2", title: "검사 성장 서사", genre: "정통 판타지", summary: "수련, 동료, 전투 밸런스 토론에 맞는 작품군" }
+          ]
+        }
+      ]
+    }
+  ];
+
   const seedPosts = [
     {
       id: "p-1001",
@@ -149,5 +309,5 @@
     ["#6d5bd0", "#0f766e"]
   ];
 
-  window.PageTalkData = { boards, seedPosts, palette };
+  window.PageTalkData = { boards, platformCatalog, seedPosts, palette };
 })();
