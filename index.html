@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>페이지톡 - 웹툰·웹소설 커뮤니티</title>
+    <meta
+      name="description"
+      content="웹툰과 웹소설을 좋아하는 사람들이 작품 추천, 회차 감상, 결말 추측, 창작 이야기를 나누는 커뮤니티 MVP입니다."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="페이지톡 홈">
+          <span class="brand-mark">PT</span>
+          <span>
+            <strong>페이지톡</strong>
+            <small>webtoon · novel community</small>
+          </span>
+        </a>
+        <label class="search-box">
+          <span aria-hidden="true">검색</span>
+          <input id="searchInput" type="search" placeholder="작품명, 장르, 키워드 검색" autocomplete="off" />
+        </label>
+        <button class="primary-action" id="openComposer" type="button">글쓰기</button>
+      </header>
+
+      <main class="workspace" id="mainContent">
+        <aside class="left-rail" aria-label="커뮤니티 메뉴">
+          <section class="rail-section">
+            <h2>게시판</h2>
+            <nav class="board-nav" id="boardNav"></nav>
+          </section>
+          <section class="rail-section compact">
+            <h2>오늘의 흐름</h2>
+            <div class="trend-list" id="trendList"></div>
+          </section>
+        </aside>
+
+        <section class="feed-column" aria-labelledby="feedTitle">
+          <div class="feed-toolbar">
+            <div>
+              <p class="eyebrow">community feed</p>
+              <h1 id="feedTitle">웹툰·웹소설 이야기</h1>
+            </div>
+            <div class="sort-tabs" aria-label="정렬">
+              <button type="button" data-sort="hot" class="is-active">인기</button>
+              <button type="button" data-sort="new">최신</button>
+              <button type="button" data-sort="comments">댓글</button>
+            </div>
+          </div>
+
+          <section class="composer" id="composer" aria-label="새 글 작성">
+            <div class="composer-head">
+              <strong>새 이야기 열기</strong>
+              <button type="button" id="closeComposer" aria-label="글쓰기 닫기">×</button>
+            </div>
+            <div class="composer-grid">
+              <label>
+                <span>게시판</span>
+                <select id="postBoard"></select>
+              </label>
+              <label>
+                <span>작품명</span>
+                <input id="postWork" type="text" placeholder="예: 이번 주 연재작" maxlength="40" />
+              </label>
+              <label class="wide">
+                <span>제목</span>
+                <input id="postTitle" type="text" placeholder="이야기하고 싶은 포인트를 한 줄로" maxlength="80" />
+              </label>
+              <label class="wide">
+                <span>본문</span>
+                <textarea id="postBody" rows="5" placeholder="감상, 추천 이유, 결말 추측, 작품의 매력 포인트를 적어보세요." maxlength="900"></textarea>
+              </label>
+              <label>
+                <span>말머리</span>
+                <select id="postTag">
+                  <option value="감상">감상</option>
+                  <option value="추천">추천</option>
+                  <option value="토론">토론</option>
+                  <option value="스포">스포</option>
+                  <option value="창작">창작</option>
+                </select>
+              </label>
+              <label>
+                <span>닉네임</span>
+                <input id="postAuthor" type="text" value="익명독자" maxlength="16" />
+              </label>
+            </div>
+            <div class="composer-actions">
+              <p id="composerHint">작품 원문·유료 회차 캡처 업로드 없이 감상과 토론만 다룹니다.</p>
+              <button type="button" id="publishPost">등록</button>
+            </div>
+          </section>
+
+          <div class="feed-stats" id="feedStats"></div>
+          <div class="post-list" id="postList"></div>
+        </section>
+
+        <aside class="detail-column" aria-label="선택한 게시글">
+          <article class="discussion-panel" id="discussionPanel"></article>
+        </aside>
+      </main>
+    </div>
+
+    <script src="src/data.js"></script>
+    <script src="src/storage.js"></script>
+    <script src="src/utils.js"></script>
+    <script src="src/render.js"></script>
+    <script src="src/main.js"></script>
+  </body>
+</html>
